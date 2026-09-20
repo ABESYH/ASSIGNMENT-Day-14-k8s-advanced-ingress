@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: abe-assignment-deployment
+  labels:
+    app: abe-assignment-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: abe-assignment-deployment
+  template:
+    metadata:
+      labels:
+        app: abe-assignment-deployment
+    spec:
+      containers:
+      - name: color-app
+        image: haechanlovelove/assignment-color-app:v1
+        ports:
+        - containerPort: 5000
+        env:
+        - name: APP_COLOR
+          valueFrom:
+            configMapKeyRef:
+              name: abe-assignment-configmap
+              key: APP_COLOR
+        resources:
+          limits:
+            cpu: "333m"
+            memory: "42Mi"
+          requests:
+            cpu: "100m"
+            memory: "20Mi"
